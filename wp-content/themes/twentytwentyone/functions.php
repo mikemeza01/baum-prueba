@@ -637,3 +637,42 @@ function twentytwentyone_add_ie_class() {
 	<?php
 }
 add_action( 'wp_footer', 'twentytwentyone_add_ie_class' );
+
+
+/*
+**** CUSTOM POST TYPE FESTIVALES ****
+*/
+function registrar_festival_posttype() {
+	$labels = array(
+		'name'               => _x( 'Festivales', 'twentytwentyone' ),
+		'singular_name'      => _x( 'Festival', 'twentytwentyone' ),
+		'add_new'            => __( 'Añadir nuevo','twentytwentyone'),
+		'add_new_item'       => __( 'Nuevo Festival','twentytwentyone'),
+		'edit_item'          => __( 'Editar Festival','twentytwentyone' ),
+		'new_item'           => __( 'Nuevo Festival','twentytwentyone' ),
+		'all_items'          => __( 'Todos los Festivales','twentytwentyone' ),
+		'view_item'          => __( 'Ver Festival','twentytwentyone'),
+		'search_items'       => __( 'Buscar Festival','twentytwentyone'),
+		'not_found'          => __( 'No se encontro','twentytwentyone' ),
+		'not_found_in_trash' => __( 'No se encontro en la papelera','twentytwentyone' ),
+		'parent_item_colon'  => '',
+		'menu_name'          => __('Festivales','twentytwentyone'));
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'show_ui'            => true,
+		'publicly_queryable' => true,
+		'rewrite'            => array( 'slug' => 'festival' ),
+		'has_archive'        => true,
+		'capability_type'    => 'post',
+		'menu_icon'          => 'dashicons-format-audio',
+		'can_export'         => true,
+		'menu_position'      => 5,
+		'supports'           => array('title','editor','author','thumbnail','custom-fields')
+	);
+	register_post_type( 'festival', $args );	
+}
+
+add_action( 'init', 'registrar_festival_posttype' );
+
+
