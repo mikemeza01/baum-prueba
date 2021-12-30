@@ -640,6 +640,24 @@ add_action( 'wp_footer', 'twentytwentyone_add_ie_class' );
 
 
 /*
+**** AGREGANDO BOOTSTRAP  ****
+*/
+function agregando_bootstrap() {
+    if ( is_admin() ) {
+       return;
+    }
+
+    wp_enqueue_style( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), '4.3.1' );
+    wp_deregister_script( 'jquery' ); 
+    wp_enqueue_script( 'jquery', 'https://code.jquery.com/jquery-3.3.1.slim.min.js', array(), '3.3.1', true );
+    wp_enqueue_script( 'popper.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), '1.14.7', true );
+    wp_enqueue_script( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array(), '4.3.1', true );
+}
+add_action( 'wp_enqueue_scripts', 'agregando_bootstrap' );
+
+
+
+/*
 **** CUSTOM POST TYPE FESTIVALES ****
 */
 function registrar_festival_posttype() {
@@ -662,8 +680,8 @@ function registrar_festival_posttype() {
 		'public'             => true,
 		'show_ui'            => true,
 		'publicly_queryable' => true,
-		'rewrite'            => array( 'slug' => 'festival' ),
-		'has_archive'        => true,
+		//'rewrite' 			 => array('slug' => 'festival', 'with_front' => false),
+		'has_archive'        => 'festival',
 		'capability_type'    => 'post',
 		'menu_icon'          => 'dashicons-format-audio',
 		'can_export'         => true,
@@ -676,3 +694,74 @@ function registrar_festival_posttype() {
 add_action( 'init', 'registrar_festival_posttype' );
 
 
+/*
+**** CUSTOM POST TYPE EVENTOS ****
+*/
+function registrar_evento_posttype() {
+	$labels = array(
+		'name'               => _x( 'Eventos', 'twentytwentyone' ),
+		'singular_name'      => _x( 'Evento', 'twentytwentyone' ),
+		'add_new'            => __( 'Añadir nuevo','twentytwentyone'),
+		'add_new_item'       => __( 'Nuevo Evento','twentytwentyone'),
+		'edit_item'          => __( 'Editar Evento','twentytwentyone' ),
+		'new_item'           => __( 'Nuevo Evento','twentytwentyone' ),
+		'all_items'          => __( 'Todos los Eventos','twentytwentyone' ),
+		'view_item'          => __( 'Ver Evento','twentytwentyone'),
+		'search_items'       => __( 'Buscar Evento','twentytwentyone'),
+		'not_found'          => __( 'No se encontro','twentytwentyone' ),
+		'not_found_in_trash' => __( 'No se encontro en la papelera','twentytwentyone' ),
+		'parent_item_colon'  => '',
+		'menu_name'          => __('Eventos','twentytwentyone'));
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'show_ui'            => true,
+		'publicly_queryable' => true,
+		'rewrite'            => array( 'slug' => 'evento' ),
+		'has_archive'        => true,
+		'capability_type'    => 'post',
+		'menu_icon'          => 'dashicons-playlist-audio',
+		'can_export'         => true,
+		'menu_position'      => 5,
+		'supports'           => array('title','editor','author','thumbnail','custom-fields')
+	);
+	register_post_type( 'evento', $args );	
+}
+
+add_action( 'init', 'registrar_evento_posttype' );
+
+/*
+**** CUSTOM POST TYPE ARTISTAS ****
+*/
+function registrar_artista_posttype() {
+	$labels = array(
+		'name'               => _x( 'Artistas', 'twentytwentyone' ),
+		'singular_name'      => _x( 'Artista', 'twentytwentyone' ),
+		'add_new'            => __( 'Añadir nuevo','twentytwentyone'),
+		'add_new_item'       => __( 'Nuevo Artista','twentytwentyone'),
+		'edit_item'          => __( 'Editar Artista','twentytwentyone' ),
+		'new_item'           => __( 'Nuevo Artista','twentytwentyone' ),
+		'all_items'          => __( 'Todos los Artistas','twentytwentyone' ),
+		'view_item'          => __( 'Ver Artista','twentytwentyone'),
+		'search_items'       => __( 'Buscar Artista','twentytwentyone'),
+		'not_found'          => __( 'No se encontro','twentytwentyone' ),
+		'not_found_in_trash' => __( 'No se encontro en la papelera','twentytwentyone' ),
+		'parent_item_colon'  => '',
+		'menu_name'          => __('Artistas','twentytwentyone'));
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'show_ui'            => true,
+		'publicly_queryable' => true,
+		'rewrite'            => array( 'slug' => 'artista' ),
+		'has_archive'        => true,
+		'capability_type'    => 'post',
+		'menu_icon'          => 'dashicons-groups',
+		'can_export'         => true,
+		'menu_position'      => 5,
+		'supports'           => array('title','editor','author','thumbnail','custom-fields')
+	);
+	register_post_type( 'artista', $args );	
+}
+
+add_action( 'init', 'registrar_artista_posttype' );
