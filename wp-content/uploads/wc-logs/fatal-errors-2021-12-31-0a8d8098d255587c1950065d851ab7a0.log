@@ -1,0 +1,27 @@
+2021-12-31T01:31:40+00:00 CRITICAL syntax error, unexpected token "public", expecting end of file en C:\xampp\htdocs\baum-prueba\wp-content\themes\twentytwentyone\functions.php en la línea 827
+
+2021-12-31T01:32:02+00:00 CRITICAL syntax error, unexpected token "public", expecting end of file en C:\xampp\htdocs\baum-prueba\wp-content\themes\twentytwentyone\functions.php en la línea 827
+
+2021-12-31T02:22:28+00:00 CRITICAL syntax error, unexpected token "function", expecting variable or "{" or "$" en C:\xampp\htdocs\baum-prueba\wp-content\themes\twentytwentyone\functions.php en la línea 880
+
+2021-12-31T02:39:31+00:00 CRITICAL Uncaught Error: Object of class WP_REST_Request could not be converted to string in C:\xampp\htdocs\baum-prueba\wp-content\themes\twentytwentyone\functions.php:880
+Stack trace:
+#0 C:\xampp\htdocs\baum-prueba\wp-includes\rest-api\class-wp-rest-server.php(1140): rest_eventos(Object(WP_REST_Request))
+#1 C:\xampp\htdocs\baum-prueba\wp-includes\rest-api\class-wp-rest-server.php(987): WP_REST_Server->respond_to_request(Object(WP_REST_Request), '/eb/v1/eventos/...', Array, NULL)
+#2 C:\xampp\htdocs\baum-prueba\wp-includes\rest-api\class-wp-rest-server.php(414): WP_REST_Server->dispatch(Object(WP_REST_Request))
+#3 C:\xampp\htdocs\baum-prueba\wp-includes\rest-api.php(370): WP_REST_Server->serve_request('/eb/v1/eventos/...')
+#4 C:\xampp\htdocs\baum-prueba\wp-includes\class-wp-hook.php(303): rest_api_loaded(Object(WP))
+#5 C:\xampp\htdocs\baum-prueba\wp-includes\class-wp-hook.php(327): WP_Hook->apply_filters(NULL, Array)
+#6 C:\xampp\htdocs\baum-prueba\wp-includes\plugin.php(518): WP_Hook->do_action(Array)
+#7 C:\xampp\htdocs\baum-prueba\wp-includes\class-wp.php(388): do_action_ref_array('parse_request', Array)
+#8 C:\xampp\htdocs\baum-prueba\wp-includes\class-wp.php(750): WP->parse_request('')
+#9 C:\xampp\htdocs\baum-prueba\wp-includes\functions.php(1291): WP->main('')
+#10 C:\xampp\htdocs\baum-prueba\wp-blog-header.php(16): wp()
+#11 C:\xampp\htdocs\baum-prueba\index.php(17): require('C:\\xampp\\htdocs...')
+#12 {main}
+  thrown en C:\xampp\htdocs\baum-prueba\wp-content\themes\twentytwentyone\functions.php en la línea 880
+
+2021-12-31T02:42:16+00:00 CRITICAL syntax error, unexpected variable "$args" en C:\xampp\htdocs\baum-prueba\wp-content\themes\twentytwentyone\functions.php en la línea 881
+
+2021-12-31T04:24:18+00:00 CRITICAL Unclosed '{' on line 880 does not match ')' en C:\xampp\htdocs\baum-prueba\wp-content\themes\twentytwentyone\functions.php en la línea 881
+

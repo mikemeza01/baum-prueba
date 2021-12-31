@@ -678,6 +678,7 @@ function registrar_festival_posttype() {
 	$args = array(
 		'labels'             => $labels,
 		'public'             => true,
+		'show_in_rest' 		 => true,
 		'show_ui'            => true,
 		'publicly_queryable' => true,
 		//'rewrite' 			 => array('slug' => 'festival', 'with_front' => false),
@@ -715,6 +716,8 @@ function registrar_evento_posttype() {
 	$args = array(
 		'labels'             => $labels,
 		'public'             => true,
+		'show_in_rest' 		 => true,
+		'rest_controller_class' => 'WP_REST_Posts_Controller',
 		'show_ui'            => true,
 		'publicly_queryable' => true,
 		'rewrite'            => array( 'slug' => 'evento' ),
@@ -751,6 +754,7 @@ function registrar_artista_posttype() {
 	$args = array(
 		'labels'             => $labels,
 		'public'             => true,
+		'show_in_rest' 		 => true,
 		'show_ui'            => true,
 		'publicly_queryable' => true,
 		'rewrite'            => array( 'slug' => 'artista' ),
@@ -765,3 +769,124 @@ function registrar_artista_posttype() {
 }
 
 add_action( 'init', 'registrar_artista_posttype' );
+
+
+/*
+**** Funcion para generar JSON de eventos por artista ****
+*/
+function rest_artistas_evento() {
+		$url = $_SERVER['REQUEST_URI']; 
+		$url_path = parse_url($url, PHP_URL_PATH);
+		$id_artista = pathinfo($url_path, PATHINFO_BASENAME);
+		$args = [
+			'numberposts' => 99999,
+			'post_type' => 'evento'
+		];
+	
+		$posts = get_posts($args);
+	
+		$data = [];
+		$i = 0;
+	
+		foreach($posts as $post) {
+			$artista = get_field('evento_artista', $post->ID);
+
+			if($artista->ID == $id_artista) {
+				$data[$i]['id'] = $post->ID;
+				$data[$i]['title'] = $post->post_title;
+				$data[$i]['nombre'] = get_field('nombre_evento', $post->ID);
+				$data[$i]['descripcion_evento'] = get_field('descripcion_evento', $post->ID);
+				$data[$i]['fecha_evento'] = get_field('fecha_evento', $post->ID);
+				$data[$i]['hora_inicio_evento'] = get_field('hora_inicio_evento', $post->ID);
+				$data[$i]['hora_finalizacion_evento'] = get_field('hora_finalizacion_evento', $post->ID);
+
+				
+				$i++;
+			}
+
+			
+		}
+
+	
+		return $data;
+}
+
+/*
+**** Funcion para agregar endpoint al API REST de eventos por artista ****
+*/
+add_action('rest_api_init', function() {
+	$url = $_SERVER['REQUEST_URI']; 
+	$url_path = parse_url($url, PHP_URL_PATH);
+	$id_artista = pathinfo($url_path, PATHINFO_BASENAME);
+
+    register_rest_route('eb/v1/', 'artistas/'.$id_artista, [
+		'methods' => 'GET',
+		'callback' => 'rest_artistas_evento',
+	]);
+});
+
+
+
+/*
+**** Funcion para generar JSON de artistas ****
+*/
+function rest_artistas() {
+	$args = [
+		'numberposts' => 99999,
+		'post_type' => 'artista'
+	];
+
+	$posts = get_posts($args);
+
+	$data = [];
+	$i = 0;
+
+	foreach($posts as $post) {
+			$data[$i]['id'] = $post->ID;
+			$data[$i]['title'] = $post->post_title;
+			$data[$i]['nombre_artista'] = get_field('nombre_artista', $post->ID);
+			$data[$i]['email_artista'] = get_field('email_artista', $post->ID);
+			$data[$i]['telefono_artista'] = get_field('telefono_artista', $post->ID);
+			$data[$i]['informacion_adicional_artista'] = get_field('informacion_adicional_artista', $post->ID);
+
+			
+			$i++;
+	}
+
+
+	return $data;
+}
+
+/*
+**** Funcion para agregar endpoint al API REST de artistas ****
+*/
+add_action('rest_api_init', function() {
+
+	register_rest_route('eb/v1/', 'artistas', [
+		'methods' => 'GET',
+		'callback' => 'rest_artistas',
+	]);
+});
+
+
+
+/*
+**** Función para agregar la acción que muestra el campo información extra ****
+*/
+add_action( 'woocommerce_before_add_to_cart_form', 'informacion_extra', 11 ); 
+function informacion_extra() {
+    global $product;
+
+    $informacion_extra = $product->get_meta( 'informacion_extra' );
+
+    if ( ! empty($informacion_extra) ) {
+        echo '<p><strong>Información Extra: </strong>' .  $informacion_extra  . '</p>';
+    }
+}
+
+/*
+**** Se remueve el titulo de la posición inicial ****
+**** Se agrega la acción para que se muestre antes de la imagen del producto ****
+*/
+remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
+add_action( 'woocommerce_before_single_product_summary', 'woocommerce_template_single_title', 5 );
