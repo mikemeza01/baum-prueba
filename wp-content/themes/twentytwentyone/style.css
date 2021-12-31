@@ -1088,7 +1088,7 @@ body {
 	font-weight: normal;
 	color: var(--global--color-primary);
 	text-align: left;
-	background-color: var(--global--color-background);
+	background-color: var(--global--color-background) !important;
 }
 
 button {
@@ -5976,4 +5976,24 @@ footer {
 
 .is-IE .post-thumbnail .wp-post-image {
 	min-width: auto;
+}
+
+
+.container.festivales img{
+	width: 100%;
+}
+
+.encabezado-fondo {
+	padding: 100px 0;
+	color: #fff;
+	background-position: center center !important;
+    background-size: cover !important;
+}
+
+.encabezado-fondo h1 {
+	color: #fff;
+}
+
+.single-festival h3 {
+	font-size: 32px !important;
 }

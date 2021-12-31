@@ -637,3 +637,256 @@ function twentytwentyone_add_ie_class() {
 	<?php
 }
 add_action( 'wp_footer', 'twentytwentyone_add_ie_class' );
+
+
+/*
+**** AGREGANDO BOOTSTRAP  ****
+*/
+function agregando_bootstrap() {
+    if ( is_admin() ) {
+       return;
+    }
+
+    wp_enqueue_style( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), '4.3.1' );
+    wp_deregister_script( 'jquery' ); 
+    wp_enqueue_script( 'jquery', 'https://code.jquery.com/jquery-3.3.1.slim.min.js', array(), '3.3.1', true );
+    wp_enqueue_script( 'popper.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), '1.14.7', true );
+    wp_enqueue_script( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array(), '4.3.1', true );
+}
+add_action( 'wp_enqueue_scripts', 'agregando_bootstrap' );
+
+
+
+/*
+**** CUSTOM POST TYPE FESTIVALES ****
+*/
+function registrar_festival_posttype() {
+	$labels = array(
+		'name'               => _x( 'Festivales', 'twentytwentyone' ),
+		'singular_name'      => _x( 'Festival', 'twentytwentyone' ),
+		'add_new'            => __( 'Añadir nuevo','twentytwentyone'),
+		'add_new_item'       => __( 'Nuevo Festival','twentytwentyone'),
+		'edit_item'          => __( 'Editar Festival','twentytwentyone' ),
+		'new_item'           => __( 'Nuevo Festival','twentytwentyone' ),
+		'all_items'          => __( 'Todos los Festivales','twentytwentyone' ),
+		'view_item'          => __( 'Ver Festival','twentytwentyone'),
+		'search_items'       => __( 'Buscar Festival','twentytwentyone'),
+		'not_found'          => __( 'No se encontro','twentytwentyone' ),
+		'not_found_in_trash' => __( 'No se encontro en la papelera','twentytwentyone' ),
+		'parent_item_colon'  => '',
+		'menu_name'          => __('Festivales','twentytwentyone'));
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'show_in_rest' 		 => true,
+		'show_ui'            => true,
+		'publicly_queryable' => true,
+		//'rewrite' 			 => array('slug' => 'festival', 'with_front' => false),
+		'has_archive'        => 'festival',
+		'capability_type'    => 'post',
+		'menu_icon'          => 'dashicons-format-audio',
+		'can_export'         => true,
+		'menu_position'      => 5,
+		'supports'           => array('title','editor','author','thumbnail','custom-fields')
+	);
+	register_post_type( 'festival', $args );	
+}
+
+add_action( 'init', 'registrar_festival_posttype' );
+
+
+/*
+**** CUSTOM POST TYPE EVENTOS ****
+*/
+function registrar_evento_posttype() {
+	$labels = array(
+		'name'               => _x( 'Eventos', 'twentytwentyone' ),
+		'singular_name'      => _x( 'Evento', 'twentytwentyone' ),
+		'add_new'            => __( 'Añadir nuevo','twentytwentyone'),
+		'add_new_item'       => __( 'Nuevo Evento','twentytwentyone'),
+		'edit_item'          => __( 'Editar Evento','twentytwentyone' ),
+		'new_item'           => __( 'Nuevo Evento','twentytwentyone' ),
+		'all_items'          => __( 'Todos los Eventos','twentytwentyone' ),
+		'view_item'          => __( 'Ver Evento','twentytwentyone'),
+		'search_items'       => __( 'Buscar Evento','twentytwentyone'),
+		'not_found'          => __( 'No se encontro','twentytwentyone' ),
+		'not_found_in_trash' => __( 'No se encontro en la papelera','twentytwentyone' ),
+		'parent_item_colon'  => '',
+		'menu_name'          => __('Eventos','twentytwentyone'));
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'show_in_rest' 		 => true,
+		'rest_controller_class' => 'WP_REST_Posts_Controller',
+		'show_ui'            => true,
+		'publicly_queryable' => true,
+		'rewrite'            => array( 'slug' => 'evento' ),
+		'has_archive'        => true,
+		'capability_type'    => 'post',
+		'menu_icon'          => 'dashicons-playlist-audio',
+		'can_export'         => true,
+		'menu_position'      => 5,
+		'supports'           => array('title','editor','author','thumbnail','custom-fields')
+	);
+	register_post_type( 'evento', $args );	
+}
+
+add_action( 'init', 'registrar_evento_posttype' );
+
+/*
+**** CUSTOM POST TYPE ARTISTAS ****
+*/
+function registrar_artista_posttype() {
+	$labels = array(
+		'name'               => _x( 'Artistas', 'twentytwentyone' ),
+		'singular_name'      => _x( 'Artista', 'twentytwentyone' ),
+		'add_new'            => __( 'Añadir nuevo','twentytwentyone'),
+		'add_new_item'       => __( 'Nuevo Artista','twentytwentyone'),
+		'edit_item'          => __( 'Editar Artista','twentytwentyone' ),
+		'new_item'           => __( 'Nuevo Artista','twentytwentyone' ),
+		'all_items'          => __( 'Todos los Artistas','twentytwentyone' ),
+		'view_item'          => __( 'Ver Artista','twentytwentyone'),
+		'search_items'       => __( 'Buscar Artista','twentytwentyone'),
+		'not_found'          => __( 'No se encontro','twentytwentyone' ),
+		'not_found_in_trash' => __( 'No se encontro en la papelera','twentytwentyone' ),
+		'parent_item_colon'  => '',
+		'menu_name'          => __('Artistas','twentytwentyone'));
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'show_in_rest' 		 => true,
+		'show_ui'            => true,
+		'publicly_queryable' => true,
+		'rewrite'            => array( 'slug' => 'artista' ),
+		'has_archive'        => true,
+		'capability_type'    => 'post',
+		'menu_icon'          => 'dashicons-groups',
+		'can_export'         => true,
+		'menu_position'      => 5,
+		'supports'           => array('title','editor','author','thumbnail','custom-fields')
+	);
+	register_post_type( 'artista', $args );	
+}
+
+add_action( 'init', 'registrar_artista_posttype' );
+
+
+/*
+**** Funcion para generar JSON de eventos por artista ****
+*/
+function rest_artistas_evento() {
+		$url = $_SERVER['REQUEST_URI']; 
+		$url_path = parse_url($url, PHP_URL_PATH);
+		$id_artista = pathinfo($url_path, PATHINFO_BASENAME);
+		$args = [
+			'numberposts' => 99999,
+			'post_type' => 'evento'
+		];
+	
+		$posts = get_posts($args);
+	
+		$data = [];
+		$i = 0;
+	
+		foreach($posts as $post) {
+			$artista = get_field('evento_artista', $post->ID);
+
+			if($artista->ID == $id_artista) {
+				$data[$i]['id'] = $post->ID;
+				$data[$i]['title'] = $post->post_title;
+				$data[$i]['nombre'] = get_field('nombre_evento', $post->ID);
+				$data[$i]['descripcion_evento'] = get_field('descripcion_evento', $post->ID);
+				$data[$i]['fecha_evento'] = get_field('fecha_evento', $post->ID);
+				$data[$i]['hora_inicio_evento'] = get_field('hora_inicio_evento', $post->ID);
+				$data[$i]['hora_finalizacion_evento'] = get_field('hora_finalizacion_evento', $post->ID);
+
+				
+				$i++;
+			}
+
+			
+		}
+
+	
+		return $data;
+}
+
+/*
+**** Funcion para agregar endpoint al API REST de eventos por artista ****
+*/
+add_action('rest_api_init', function() {
+	$url = $_SERVER['REQUEST_URI']; 
+	$url_path = parse_url($url, PHP_URL_PATH);
+	$id_artista = pathinfo($url_path, PATHINFO_BASENAME);
+
+    register_rest_route('eb/v1/', 'artistas/'.$id_artista, [
+		'methods' => 'GET',
+		'callback' => 'rest_artistas_evento',
+	]);
+});
+
+
+
+/*
+**** Funcion para generar JSON de artistas ****
+*/
+function rest_artistas() {
+	$args = [
+		'numberposts' => 99999,
+		'post_type' => 'artista'
+	];
+
+	$posts = get_posts($args);
+
+	$data = [];
+	$i = 0;
+
+	foreach($posts as $post) {
+			$data[$i]['id'] = $post->ID;
+			$data[$i]['title'] = $post->post_title;
+			$data[$i]['nombre_artista'] = get_field('nombre_artista', $post->ID);
+			$data[$i]['email_artista'] = get_field('email_artista', $post->ID);
+			$data[$i]['telefono_artista'] = get_field('telefono_artista', $post->ID);
+			$data[$i]['informacion_adicional_artista'] = get_field('informacion_adicional_artista', $post->ID);
+
+			
+			$i++;
+	}
+
+
+	return $data;
+}
+
+/*
+**** Funcion para agregar endpoint al API REST de artistas ****
+*/
+add_action('rest_api_init', function() {
+
+	register_rest_route('eb/v1/', 'artistas', [
+		'methods' => 'GET',
+		'callback' => 'rest_artistas',
+	]);
+});
+
+
+
+/*
+**** Función para agregar la acción que muestra el campo información extra ****
+*/
+add_action( 'woocommerce_before_add_to_cart_form', 'informacion_extra', 11 ); 
+function informacion_extra() {
+    global $product;
+
+    $informacion_extra = $product->get_meta( 'informacion_extra' );
+
+    if ( ! empty($informacion_extra) ) {
+        echo '<p><strong>Información Extra: </strong>' .  $informacion_extra  . '</p>';
+    }
+}
+
+/*
+**** Se remueve el titulo de la posición inicial ****
+**** Se agrega la acción para que se muestre antes de la imagen del producto ****
+*/
+remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
+add_action( 'woocommerce_before_single_product_summary', 'woocommerce_template_single_title', 5 );
